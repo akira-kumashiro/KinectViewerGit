@@ -24,11 +24,12 @@ using namespace std;
 int main(int argc, char** argv) 
 {
 	FileInOut fileio;
-	fileio.makeImageSavingdirectory();
-	fileio.initializeCV();
+	//fileio.makeImageSavingDirectory();
+	//fileio.initializeCV();
 
 	NtKinect kinect;
-	while (1) {
+	while (1) 
+	{
 		cv::Mat colorImage, depthImage, rawDepthImage;
 		
 		kinect.setRGB();
@@ -48,7 +49,7 @@ int main(int argc, char** argv)
 			if (c == 27 || c == 'q' || c == 'Q') break; // ESC|q|Q for Exit
 		}
 	}
-	cv::destroyAllWindows();
+	//cv::destroyAllWindows();
 	
 	
 	/*try {
@@ -60,7 +61,7 @@ int main(int argc, char** argv)
 		cin >> s;
 	}*/
 	wprintf_s(L"Exiting.\n");
-	fileio.deleteEmptydirectory();
+	//fileio.deleteEmptydirectory();
 	while (1)
 	{
 		if (_kbhit())
