@@ -1,10 +1,10 @@
 #ifdef _DEBUG
-//Debugƒ‚[ƒh‚Ìê‡
+//Debugãƒ¢ãƒ¼ãƒ‰ã®å ´åˆ
 #pragma comment(lib,"C:\\opencv\\opencv-2.4.11\\build\\x64\\vc12\\lib\\opencv_core2411d.lib")
 #pragma comment(lib,"C:\\opencv\\opencv-2.4.11\\build\\x64\\vc12\\lib\\opencv_imgproc2411d.lib")
 #pragma comment(lib,"C:\\opencv\\opencv-2.4.11\\build\\x64\\vc12\\lib\\opencv_highgui2411d.lib")
 #else
-//Releaseƒ‚[ƒh‚Ìê‡
+//Releaseãƒ¢ãƒ¼ãƒ‰ã®å ´åˆ
 #pragma comment(lib,"C:\\opencv\\opencv-2.4.11\\build\\x64\\vc12\\lib\\opencv_core2411.lib")
 #pragma comment(lib,"C:\\opencv\\opencv-2.4.11\\build\\x64\\vc12\\lib\\opencv_imgproc2411.lib")
 #pragma comment(lib,"C:\\opencv\\opencv-2.4.11\\build\\x64\\vc12\\lib\\opencv_highgui2411.lib")
@@ -20,26 +20,6 @@
 #include "FileIO.h"
 
 using namespace std;
-
-/*void doJob() 
-{
-	NtKinect kinect;
-	//FileInOut fileio;
-	while (1) {
-		kinect.setRGB();
-		kinect.setDepth(false);
-		cv::imshow("rgb", kinect.rgbImage);
-		cv::imshow("depth", kinect.depthImage);
-		auto key = cv::waitKey(1);
-		if (key == 'q' || key == 'Q' || key == 27) break;
-		if (key == 's' || key == 'S')
-		{
-			//fileio.saveCameraImage();
-
-		}
-	}
-	cv::destroyAllWindows();
-}*/
 
 int main(int argc, char** argv) 
 {
