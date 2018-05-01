@@ -8,6 +8,10 @@ URLは[ここ](https://sourceforge.net/projects/opencvlibrary/files/opencv-win/2
 開発するときは新しいバージョンでしたほうがいいと思うよ  
 ### 2. KinectSDKをインストールする  
 URLは[ここ](https://www.microsoft.com/en-us/download/details.aspx?id=44561)  
-
+  
+## Updateブランチについて  
+もともとあったコードがゴミコード過ぎたので修正します  
+動作確認したらmasterに反映します  
+  
 ## その他
 困ったら連絡して
