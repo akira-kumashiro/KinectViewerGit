@@ -3,13 +3,18 @@
 FileInOut::FileInOut()
 {
 	initializeCV();
-	makeImageSavingDirectory()
+	std::cout << "Q/Esc:\tèIóπ" << std::endl;
+	std::cout << "S:\tï€ë∂" << std::endl;
+	std::cout << "D:\têîílÉfÅ[É^ÇÃï€ë∂ÅCëIëîÕàÕÇÃâÊëúÇÃï€ë∂(ëIëÇ≥ÇÍÇƒÇ¢ÇÍÇŒ)" << std::endl;
+
+
+	//makeImageSavingDirectory();
 }
 
 FileInOut::~FileInOut()
 {
 	cv::destroyAllWindows();
-	deleteEmptydirectory();
+	//deleteEmptydirectory();
 }
 
 void FileInOut::initializeCV(void)//äeWindowÇÃñºëOìoò^
@@ -76,12 +81,12 @@ void FileInOut::onMouse(int event, int x, int y, int flags)//ÉNÉäÉbÉNç¿ïWÇÃãóó£Ç
 		point.y = y;
 		origin = cv::Point(x, y);
 		selection = cv::Rect(x, y, 0, 0);
-		select_object = TRUE;
-		isAllSelected = FALSE;
+		select_object = true;
+		isAllSelected = false;
 		break;
 
 	case CV_EVENT_LBUTTONUP:
-		select_object = FALSE;
+		select_object = false;
 		break;
 
 	default:
@@ -92,6 +97,9 @@ void FileInOut::onMouse(int event, int x, int y, int flags)//ÉNÉäÉbÉNç¿ïWÇÃãóó£Ç
 void FileInOut::saveCameraImage(bool isData)//ÉJÉÅÉâÇÃâÊëúÇÃï€ë∂
 {
 	char imageName[4][40];
+
+	if (imageNum == 0)
+		makeImageSavingDirectory();
 
 	if (!isData)
 	{
@@ -126,19 +134,20 @@ void FileInOut::convertGrayToColor(const cv::Mat grayImage)//ëIëóÃàÊÇ…íÖêF
 			if (matMax != matMin && (!isHolden || matMinHol != matMaxHol) && x >= selection.x && x < selection.x + selection.width && y >= selection.y && y < selection.y + selection.height)
 			{
 				if (x == selection.x&&y == selection.y)
-					wprintf_s(L"%d,%d,%d,%d\n", matMax, matMaxHol, matMin, matMinHol);
+					wprintf_s(L"%lf,%lf,%lf,%lf\n", matMax, matMaxHol, matMin, matMinHol);
+					//wprintf_s(L"%d,%d,%d,%d\n", matMax, matMaxHol, matMin, matMinHol);
 				double xbrt = (isHolden ? ((double)(rawDepthImage.at<UINT16>(y, x) - matMinHol) / ((double)matMaxHol - matMinHol)) : ((double)(rawDepthImage.at<UINT16>(y, x) - matMin) / ((double)matMax - matMin)));
 				//ÉJÉâÅ[ïœä∑
 				if (xbrt < 0)
 				{
-					rawDepthImageTempPtr[x] = cv::Vec3b((matMinHol == matMin) ? 255 : (double)(rawDepthImage.at<UINT16>(y, x) - matMin) / (matMinHol - matMin) * 255, 0, 0);
+					rawDepthImageTempPtr[x] = cv::Vec3b((matMinHol == matMin) ? 255 : (uchar)(rawDepthImage.at<UINT16>(y, x) - matMin) / (matMinHol - matMin) * 255, 0, 0);
 					/*rawDepthImageTemp.data[y * rawDepthImageTemp.step + x * 3 + 0] = (matMinHol == matMin) ? 255 : (double)(rawDepthImage.at<UINT16>(y, x) - matMin) / (matMinHol - matMin) * 255;      //B
 					rawDepthImageTemp.data[y * rawDepthImageTemp.step + x * 3 + 1] = 0;        //G
 					rawDepthImageTemp.data[y * rawDepthImageTemp.step + x * 3 + 2] = 0;        //R*/
 				}
 				else if (xbrt > 1)
 				{
-					rawDepthImageTempPtr[x] = cv::Vec3b(0, 0, (matMaxHol == matMax) ? 255 : (double)(matMin - rawDepthImage.at<UINT16>(y, x)) / (matMaxHol - matMax) * 255);
+					rawDepthImageTempPtr[x] = cv::Vec3b(0, 0, (matMaxHol == matMax) ? 255 : (uchar)(matMin - rawDepthImage.at<UINT16>(y, x)) / (matMaxHol - matMax) * 255);
 					/*rawDepthImageTemp.data[y * rawDepthImageTemp.step + x * 3 + 0] = 0;      //B
 					rawDepthImageTemp.data[y * rawDepthImageTemp.step + x * 3 + 1] = 0;        //G
 					rawDepthImageTemp.data[y * rawDepthImageTemp.step + x * 3 + 2] = (matMaxHol == matMax) ? 255 : (double)(matMin - rawDepthImage.at<UINT16>(y, x)) / (matMaxHol - matMax) * 255;        //R*/
@@ -176,7 +185,8 @@ void FileInOut::convertGrayToColor(const cv::Mat grayImage)//ëIëóÃàÊÇ…íÖêF
 			{
 				int xbrt = (grayTemp.at<UINT8>(y, x));
 				if (isHolden&&x == selection.x&&y == selection.y)
-					wprintf_s(L"%d,%d,%d,%d\n", matMax, matMaxHol, matMin, matMinHol);
+					wprintf_s(L"%lf,%lf,%lf,%lf\n", matMax, matMaxHol, matMin, matMinHol);
+					//wprintf_s(L"%d,%d,%d,%d\n", matMax, matMaxHol, matMin, matMinHol);
 				rawDepthImageTempPtr[x] = cv::Vec3b(xbrt, xbrt, xbrt);
 				/*rawDepthImageTemp.data[y * rawDepthImageTemp.step + x * 3 + 0] = xbrt;        //B
 				rawDepthImageTemp.data[y * rawDepthImageTemp.step + x * 3 + 1] = xbrt;	 //G
@@ -222,7 +232,7 @@ bool FileInOut::updateCameraImage(cv::Mat colIm, cv::Mat depIm, cv::Mat rDpIm)//
 	}
 	else if ((c == 's') || (c == 'S'))
 	{
-		saveCameraImage(FALSE);
+		saveCameraImage(false);
 	}
 	else if (c == 'd' || c == 'D')
 	{
@@ -237,12 +247,13 @@ bool FileInOut::updateCameraImage(cv::Mat colIm, cv::Mat depIm, cv::Mat rDpIm)//
 		if (selection.width > 0 && selection.height > 0)
 		{
 			saveSelectedCameraImage();
-			saveCameraImage(TRUE);
+			saveCameraImage(true);
 		}
 		wprintf_s(L"the data saved.\n");
 		dataNum++;
 	}
-	else if (c == 'h' || c == 'H')
+	//Å´Ç§Ç‹Ç≠Ç¢Ç¡ÇƒÇ»Ç¢
+	/*else if (c == 'h' || c == 'H')
 	{
 		if (isHolden)
 			isHolden = FALSE;
@@ -266,7 +277,7 @@ bool FileInOut::updateCameraImage(cv::Mat colIm, cv::Mat depIm, cv::Mat rDpIm)//
 			selection.height = rawDepthImage.rows;
 			select_object = FALSE;
 		}
-	}
+	}*/
 
 	return true;
 }
@@ -355,7 +366,7 @@ void FileInOut::saveSelectedCameraImage(void)//ïîï™âÊëúÇÃï€ë∂
 
 	for (int y = 0; y < rawDepthImageLevel.rows; y++)
 	{
-		cv::Vec3b *rawDepthImageLevelPtr = rawDepthImageLevel.ptr.ptr<cv::Vec3b>(y);
+		cv::Vec3b *rawDepthImageLevelPtr = rawDepthImageLevel.ptr<cv::Vec3b>(y);
 		for (int x = 0; x < rawDepthImageLevel.cols; x++)
 		{
 			if (matMax != matMin)
@@ -364,28 +375,28 @@ void FileInOut::saveSelectedCameraImage(void)//ïîï™âÊëúÇÃï€ë∂
 				//ÉJÉâÅ[ïœä∑
 				if (xbrt >= 0 && xbrt <= 0.25)
 				{
-					rawDepthImageLevelPtr = cv::Vec3b(255, (int)((double)255 * sin(xbrt * 2 * M_PI)), 0);
+					rawDepthImageLevelPtr[x] = cv::Vec3b(255, (int)((double)255 * sin(xbrt * 2 * M_PI)), 0);
 					/*rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 0] = 255;      //B
 					rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 1] = (int)((double)255 * sin(xbrt * 2 * M_PI));        //G
 					rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 2] = 0;        //R*/
 				}
 				else if (xbrt > 0.25 && xbrt <= 0.5)
 				{
-					rawDepthImageLevelPtr = cv::Vec3b((int)((double)255 * sin(xbrt * 2 * M_PI)), 255, 0);
+					rawDepthImageLevelPtr[x] = cv::Vec3b((int)((double)255 * sin(xbrt * 2 * M_PI)), 255, 0);
 					/*rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 0] = (int)((double)255 * sin(xbrt * 2 * M_PI));  //B
 					rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 1] = 255;      //G
 					rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 2] = 0;        //R*/
 				}
 				else if (xbrt > 0.5 && xbrt <= 0.75)
 				{
-					rawDepthImageLevelPtr = cv::Vec3b(0, 255, (int)(-(double)255 * sin(xbrt * 2 * M_PI)));
+					rawDepthImageLevelPtr[x] = cv::Vec3b(0, 255, (int)(-(double)255 * sin(xbrt * 2 * M_PI)));
 					/*rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 0] = 0;        //B
 					rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 1] = 255;      //G
 					rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 2] = (int)(-(double)255 * sin(xbrt * 2 * M_PI));  //R*/
 				}
 				else
 				{
-					rawDepthImageLevelPtr = cv::Vec3b(0, (int)(-(double)255 * sin(xbrt * 2 * M_PI)), 255);
+					rawDepthImageLevelPtr[x] = cv::Vec3b(0, (int)(-(double)255 * sin(xbrt * 2 * M_PI)), 255);
 					/*rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 0] = 0;        //B
 					rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 1] = (int)(-(double)255 * sin(xbrt * 2 * M_PI));  //G
 					rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 2] = 255;      //R*/
@@ -394,7 +405,7 @@ void FileInOut::saveSelectedCameraImage(void)//ïîï™âÊëúÇÃï€ë∂
 			else
 			{
 				int xbrt = (int)(matMax / 255);
-				rawDepthImageLevelPtr = cv::Vec3b(xbrt, xbrt, xbrt);
+				rawDepthImageLevelPtr[x] = cv::Vec3b(xbrt, xbrt, xbrt);
 				/*rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 0] = xbrt;        //B
 				rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 1] = xbrt;	 //G
 				rawDepthImageLevel.data[y * rawDepthImageLevel.step + x * 3 + 2] = xbrt;      //R*/
