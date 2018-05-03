@@ -23,50 +23,34 @@ using namespace std;
 
 int main(int argc, char** argv) 
 {
-	FileInOut fileio;
-	fileio.makeImageSavingdirectory();
-	fileio.initializeCV();
-
-	NtKinect kinect;
-	while (1) {
-		cv::Mat colorImage, depthImage, rawDepthImage;
-		
-		kinect.setRGB();
-		kinect.setDepth(false);
-
-		colorImage = kinect.rgbImage.clone();
-		depthImage = kinect.depthMat.clone();
-		rawDepthImage = kinect.rawDepthImage.clone();
-
-		if (!fileio.updateCameraImage(colorImage, depthImage, rawDepthImage))
-		{
-			break;
-		}
-		if (_kbhit())
-		{ // Break loop
-			int c = _getch() & 255;
-			if (c == 27 || c == 'q' || c == 'Q') break; // ESC|q|Q for Exit
-		}
-	}
-	cv::destroyAllWindows();
-	
-	
-	/*try {
-		doJob();
-	}
-	catch (exception &ex) {
-		cout << ex.what() << endl;
-		string s;
-		cin >> s;
-	}*/
-	wprintf_s(L"Exiting.\n");
-	fileio.deleteEmptydirectory();
-	while (1)
+	try
 	{
-		if (_kbhit())
+		FileInOut *fileio;
+		fileio = new FileInOut();
+
+		NtKinect kinect;
+		while (1)
 		{
-			break;
+			cv::Mat colorImage, depthImage, rawDepthImage;
+
+			kinect.setRGB();
+			kinect.setDepth(false);
+
+			colorImage = kinect.rgbImage.clone();
+			depthImage = kinect.depthMat.clone();
+			rawDepthImage = kinect.rawDepthImage.clone();
+
+			if (!fileio->updateCameraImage(colorImage, depthImage, rawDepthImage))
+			{
+				break;
+			}
 		}
+		wprintf_s(L"Exiting.\n");
+		delete fileio;
+		return 0;
 	}
-	return 0;
+	catch (std::exception& ex)
+	{
+		std::cout << ex.what() << std::endl;
+	}
 }
