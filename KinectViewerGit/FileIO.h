@@ -55,9 +55,9 @@ private:
 	int imageNum = 0;
 	int dataNum = 0;
 
-	bool select_object = FALSE;
-	bool isAllSelected = FALSE;
-	bool isHolden = FALSE;
+	bool select_object = false;
+	bool isAllSelected = false;
+	bool isHolden = false;
 	cv::Rect selection;
 	cv::Rect selectionMeas;
 
