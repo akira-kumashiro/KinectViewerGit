@@ -20,7 +20,7 @@ URLは[ここ](https://www.microsoft.com/en-us/download/details.aspx?id=44561)
   
 ## Updateブランチについて  
 もともとあったコードがゴミコード過ぎたので修正します  
-動作確認したらmasterに反映します  
-  
+~~動作確認したらmasterに反映します~~ マージしました  
+  
 ## その他
 困ったら連絡して
