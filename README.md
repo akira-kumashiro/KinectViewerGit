@@ -1,6 +1,6 @@
 # KinectViewerGit
 kinectの性能が試験できるはず  
-*クローンの仕方は[ここ](https://github.com/akira-kumashiro/openCVtest/tree/master)に書いたよ！！！*  
+**クローンの仕方は[ここ](https://github.com/akira-kumashiro/openCVtest/tree/master)に書いたよ！！！**  
 
 ## インストール方法
 ### 1. Visual C++ および Visual C++ の再頒布可能パッケージをインストールする
